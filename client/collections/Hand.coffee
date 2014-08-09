@@ -1,11 +1,16 @@
 class window.Hand extends Backbone.Collection
 
   model: Card
-
+              #hand   #whichDeck #boolean for dealer
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
     @add(@deck.pop()).last()
+
+  stand: ->
+    #save score for player
+    #hit for dealer
+    @trigger('stand', @)
 
   scores: ->
     # The scores are an array of potential scores.
@@ -18,3 +23,12 @@ class window.Hand extends Backbone.Collection
       score + if card.get 'revealed' then card.get 'value' else 0
     , 0
     if hasAce then [score, score + 10] else [score]
+
+  checkScore: (x) ->
+    if x > 21 then console.log "bust"
+
+  initDealer: ->
+
+    # get the dealer
+    # while score is less than 17
+      # hit yourself
