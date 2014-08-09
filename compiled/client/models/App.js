@@ -15,11 +15,32 @@
       this.set('deck', deck = new Deck());
       this.set('playerHand', deck.dealPlayer());
       this.set('dealerHand', deck.dealDealer());
-      return this.get('playerHand').on('stand', (function(_this) {
+      this.get('playerHand').on('bust', (function(_this) {
         return function() {
-          return console.log("dealer's turn");
+          return _this.determineWinner();
         };
       })(this));
+      this.get('dealerHand').on('determineWinner', (function(_this) {
+        return function() {
+          return _this.determineWinner();
+        };
+      })(this));
+      return this.get('playerHand').on('stand', (function(_this) {
+        return function() {
+          return _this.get('dealerHand').initDealer();
+        };
+      })(this));
+    };
+
+    App.prototype.determineWinner = function() {
+      var dealerScore, playerScore;
+      playerScore = this.get('playerHand').scores();
+      dealerScore = this.get('dealerHand').scores();
+      if (playerScore > dealerScore) {
+        return alert('you won');
+      } else {
+        return alert('dealer won');
+      }
     };
 
     return App;

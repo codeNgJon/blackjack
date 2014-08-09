@@ -10,7 +10,7 @@ class window.Hand extends Backbone.Collection
   stand: ->
     #save score for player
     #hit for dealer
-    @trigger('stand', @)
+    @trigger 'stand', @
 
   scores: ->
     # The scores are an array of potential scores.
@@ -24,10 +24,14 @@ class window.Hand extends Backbone.Collection
     , 0
     if hasAce then [score, score + 10] else [score]
 
-  checkScore: (x) ->
-    if x > 21 then console.log "bust"
+
+  checkIfPlayerLost: (x) ->
+    if x > 21 then @trigger 'bust', @
 
   initDealer: ->
+    @hit() while @scores()[0] < 17
+    if @scores()[0] < 21
+      @trigger 'determineWinner'
 
     # get the dealer
     # while score is less than 17

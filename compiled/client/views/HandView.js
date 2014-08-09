@@ -17,11 +17,7 @@
     HandView.prototype.initialize = function() {
       this.collection.on('add remove change', (function(_this) {
         return function() {
-          return _this.collection.checkScore(_this.collection.scores()[0]);
-        };
-      })(this));
-      this.collection.on('add remove', (function(_this) {
-        return function() {
+          _this.collection.checkIfPlayerLost(_this.collection.scores()[0]);
           return _this.render();
         };
       })(this));

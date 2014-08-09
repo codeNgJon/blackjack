@@ -40,13 +40,20 @@
       }
     };
 
-    Hand.prototype.checkScore = function(x) {
+    Hand.prototype.checkIfPlayerLost = function(x) {
       if (x > 21) {
-        return console.log("bust");
+        return this.trigger('bust', this);
       }
     };
 
-    Hand.prototype.initDealer = function() {};
+    Hand.prototype.initDealer = function() {
+      while (this.scores()[0] < 17) {
+        this.hit();
+      }
+      if (this.scores()[0] < 21) {
+        return this.trigger('determineWinner');
+      }
+    };
 
     return Hand;
 
