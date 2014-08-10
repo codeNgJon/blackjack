@@ -17,7 +17,7 @@
     HandView.prototype.initialize = function() {
       this.collection.on('add remove change', (function(_this) {
         return function() {
-          _this.collection.checkIfPlayerLost(_this.collection.scores()[0]);
+          _this.collection.checkIfPlayerLost(_this.collection.bestScore());
           return _this.render();
         };
       })(this));
@@ -32,7 +32,7 @@
           model: card
         }).$el;
       }));
-      return this.$('.score').text(this.collection.scores()[0]);
+      return this.$('.score').text(this.collection.bestScore());
     };
 
     return HandView;

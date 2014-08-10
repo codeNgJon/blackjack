@@ -40,18 +40,38 @@
       }
     };
 
+    Hand.prototype.bestScore = function() {
+      var currentScore, scoresArray;
+      currentScore = 0;
+      scoresArray = this.scores();
+      if (scoresArray[0] > currentScore) {
+        currentScore = scoresArray[0];
+      }
+      if (scoresArray[1] && scoresArray[1] <= 21) {
+        currentScore = scoresArray[1];
+      }
+      return currentScore;
+    };
+
     Hand.prototype.checkIfPlayerLost = function(x) {
       if (x > 21) {
-        return this.trigger('bust', this);
+        return this.bust();
       }
     };
 
+    Hand.prototype.bust = function() {
+      return this.trigger('bust', this);
+    };
+
     Hand.prototype.initDealer = function() {
-      while (this.scores()[0] < 17) {
+      this.models[0].flip();
+      while (this.bestScore() <= 17) {
         this.hit();
       }
-      if (this.scores()[0] < 21) {
+      if (this.bestScore() <= 21) {
         return this.trigger('determineWinner');
+      } else {
+        return this.bust();
       }
     };
 

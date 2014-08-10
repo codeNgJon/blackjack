@@ -17,12 +17,17 @@
       this.set('dealerHand', deck.dealDealer());
       this.get('playerHand').on('bust', (function(_this) {
         return function() {
-          return _this.determineWinner();
+          return _this.bust();
         };
       })(this));
       this.get('dealerHand').on('determineWinner', (function(_this) {
         return function() {
           return _this.determineWinner();
+        };
+      })(this));
+      this.get('dealerHand').on('bust', (function(_this) {
+        return function() {
+          return _this.dealerBust();
         };
       })(this));
       return this.get('playerHand').on('stand', (function(_this) {
@@ -34,13 +39,21 @@
 
     App.prototype.determineWinner = function() {
       var dealerScore, playerScore;
-      playerScore = this.get('playerHand').scores();
-      dealerScore = this.get('dealerHand').scores();
-      if (playerScore > dealerScore) {
+      playerScore = this.get('playerHand').bestScore();
+      dealerScore = this.get('dealerHand').bestScore();
+      if (playerScore >= dealerScore) {
         return alert('you won');
       } else {
         return alert('dealer won');
       }
+    };
+
+    App.prototype.bust = function() {
+      return alert('you lost');
+    };
+
+    App.prototype.dealerBust = function() {
+      return alert('dealer busted. you win');
     };
 
     return App;
